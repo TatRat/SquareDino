@@ -2,7 +2,7 @@
 public static class SceneController 
 {
     /// <summary>
-    /// Restarts the scene
+    /// Restarts the scene 
     /// </summary>
     public static void SceneRestart()
     {

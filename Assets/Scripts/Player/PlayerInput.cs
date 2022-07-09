@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerInput : MonoBehaviour, IInput
     {
-        public event IInput.PlayerInput OnPlayerInput;
+        public event Action<Vector2> OnPlayerInput;
         private void Update()
         {
             if (Input.touchCount > 0)

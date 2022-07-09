@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-   public delegate void StageChange(int targetStageNumber);
-   public event StageChange OnStageChange;
+   public event Action<int> OnStageChange;
    [Tooltip("an array with the number of enemies at each stage")]
    [SerializeField] private int[] enemiesCount;
    private int _currentStage = 0;

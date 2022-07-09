@@ -14,7 +14,7 @@ namespace Enemy
         [SerializeField] private int healPoint = 10;
         [Tooltip("Time after death before deactivation")]
         [SerializeField] private float timeToDeactivate = 4f;
-        [Header("Healtbar")]
+        [Header("Healthbar")]
         [SerializeField] private HealthBar healthBar;
         
         private DamageBlinkEffect _damageBlinkEffect;
