@@ -7,11 +7,13 @@ namespace Enemy
     {
         [Tooltip("Ragdoll's rigidbodies")]
         [SerializeField] private Rigidbody[] rigidbodies;
+        private Collider _collider;
         private Animator _animator;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+            _collider = GetComponent<Collider>();
         }
         private void Start()
         {
@@ -27,6 +29,7 @@ namespace Enemy
         public void ActivateRagdoll()
         {
             _animator.enabled = false;
+            _collider.enabled = false;
             SwitchKinematicState(false);
         }
     }
