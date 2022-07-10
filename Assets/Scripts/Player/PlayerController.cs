@@ -1,7 +1,9 @@
+using Player.Rigging;
 using UnityEngine;
 namespace Player
 {
     [RequireComponent(typeof(PlayerMovement), typeof(PlayerAnimationController), typeof(PlayerWeapon))]
+    [RequireComponent(typeof(RigController))]
     public class PlayerController : MonoBehaviour
     {
         [Tooltip("links to waypoints")]
@@ -12,6 +14,7 @@ namespace Player
         private PlayerMovement _playerMovement;
         private PlayerWeapon _playerWeapon;
         private PlayerAnimationController _playerAnimationController;
+        private RigController _rigController;
         private Camera _camera;
         private bool _isStarted = false;
         
@@ -30,13 +33,16 @@ namespace Player
             _playerAnimationController = GetComponent<PlayerAnimationController>();
             _playerWeapon = GetComponent<PlayerWeapon>();
             _inputManager = GetComponent<IInput>();
+            _rigController = GetComponent<RigController>();
         }
         private void Subscriptions()
         {
             _playerMovement.OnMovementStart += () => _playerAnimationController.SetRunAnimation();
             _playerMovement.OnMovementStart += () => _playerWeapon.OffPossibilityToShoot();
+            _playerMovement.OnMovementStart += () => _rigController.OnRun();
             _playerMovement.OnMovementEnd += () => _playerAnimationController.SetIdleAnimation();
             _playerMovement.OnMovementEnd += () => _playerWeapon.OnPossibilityToShoot();
+            _playerMovement.OnMovementEnd += () => _rigController.OnStop();
             stageManager.OnStageChange += number => _playerMovement.Move(waypoints[number].position);
             _inputManager.OnPlayerInput += PlayersActions;
         }

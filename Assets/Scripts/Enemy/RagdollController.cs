@@ -26,12 +26,6 @@ namespace Enemy
         /// </summary>
         public void ActivateRagdoll()
         {
-            StartCoroutine(DisableAnimations());
-        }
-        IEnumerator DisableAnimations()
-        {
-            _animator.SetTrigger("Death");
-            yield return new WaitForSeconds(0.35f);
             _animator.enabled = false;
             SwitchKinematicState(false);
         }

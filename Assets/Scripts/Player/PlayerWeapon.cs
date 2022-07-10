@@ -1,10 +1,11 @@
 using System.Collections;
 using ObjectsPool;
+using Player.Rigging;
 using UnityEngine;
 
 namespace Player
 {
-    [RequireComponent(typeof(Pool))]
+    [RequireComponent(typeof(Pool), typeof(AimTarget))]
     public class PlayerWeapon : MonoBehaviour
     {
         [Tooltip("the place where the bullets are flying from")]
@@ -12,9 +13,11 @@ namespace Player
         [SerializeField] private float cooldownTime = 0.2f;
         private bool _isReadyToShoot = true;
         private Pool _pool;
+        private AimTarget _aimTarget;
         private void Awake()
         {
             _pool = GetComponent<Pool>();
+            _aimTarget = GetComponent<AimTarget>();
         }
         /// <summary>
         /// Spawns bullet
@@ -24,6 +27,7 @@ namespace Player
         {
             if(!_isReadyToShoot) return;
             _pool.GetFreeElement(weaponPoint.position, Quaternion.identity).GetComponent<Bullet>().SetDirection(attackPoint);
+            _aimTarget.SetAimTargetPosition(attackPoint);
             StartCoroutine(Cooldown());
         }
         
