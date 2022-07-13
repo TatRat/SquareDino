@@ -3,7 +3,7 @@ using Enemy;
 using ObjectsPool;
 using UnityEngine;
 
-[RequireComponent(typeof(PoolObject), typeof(Rigidbody))]
+[RequireComponent(typeof(PoolObject), typeof(Rigidbody), typeof(TrailRenderer))]
 public class Bullet : MonoBehaviour
 {
     [Header("bullet settings")]
@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
     
     private Transform _transform;
     private PoolObject _pool;
+    private TrailRenderer _trailRenderer;
     private Vector3 _direction;
     
     #region Mono
@@ -21,10 +22,12 @@ public class Bullet : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
         _pool = GetComponent<PoolObject>();
+        _trailRenderer = GetComponent<TrailRenderer>();
     }
     private void OnEnable()
     {
         StartCoroutine(CountdownToDestruction());
+        _trailRenderer.Clear();
     }
     private void Update()
     {
@@ -37,6 +40,7 @@ public class Bullet : MonoBehaviour
     /// <param name="direction"> Vector to tap position </param>
     public void SetDirection(Vector3 direction)
     {
+        _direction = Vector3.zero;
         _direction = (transform.position - direction).normalized;
     }
 

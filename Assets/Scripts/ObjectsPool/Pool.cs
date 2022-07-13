@@ -38,14 +38,14 @@ namespace ObjectsPool
             _pool.Add(createdObject);
             return createdObject;
         }
-        private bool TryGetElement(out PoolObject element)
+        private bool TryGetElement(out PoolObject element, bool isOverloaded = false)
         {
             for (int i = 0; i < _pool.Count; i++)
             {
                 if (!_pool[i].isActiveAndEnabled)
                 {
                     element = _pool[i];
-                    element.gameObject.SetActive(true);
+                    if(!isOverloaded) element.gameObject.SetActive(true);
                     return true;
                 }
             }
@@ -55,36 +55,40 @@ namespace ObjectsPool
         /// <summary>
         /// Returns GameObject from the pool
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public PoolObject GetFreeElement()
+        /// <param name="isOverloaded"> was an overloaded method called? </param>
+        /// <returns> PoolObject from the pool</returns>
+        /// <exception cref="Exception"> pool is out of objects </exception>
+        public PoolObject GetFreeElement(bool isOverloaded = false)
         {
-            if (TryGetElement(out PoolObject element)) return element;
-            if (autoExpand) return CreateElement(true);
-            if(_pool.Count < maxCapacity) return CreateElement(true);
+            if (TryGetElement(out PoolObject element, isOverloaded)) return element;
+            if (autoExpand) return CreateElement(!isOverloaded);
+            if(_pool.Count < maxCapacity) return CreateElement(!isOverloaded);
             throw new Exception("pool is out of objects");
         }
         /// <summary>
-        /// Returns an object from the pool, sets its postition
+        /// Returns an object from the pool, sets its position
         /// </summary>
         /// <param name="position"> object position </param>
-        /// <returns> Pool object </returns>
-        public PoolObject GetFreeElement(Vector3 position)
+        /// <param name="isOverloaded"> was an overloaded method called? </param>
+        /// <returns> PoolObject from the pool </returns>
+        public PoolObject GetFreeElement(Vector3 position, bool isOverloaded = false)
         {
-            PoolObject element = GetFreeElement();
+            PoolObject element = GetFreeElement(true);
             element.transform.position = position;
+            if(!isOverloaded) element.gameObject.SetActive(true);
             return element;
         }
         /// <summary>
-        /// Returns an object from the pool, sets its postition and rotation
+        /// Returns an object from the pool, sets its position and rotation
         /// </summary>
         /// <param name="position">object position</param>
         /// <param name="rotation">object rotation</param>
         /// <returns>Pool object</returns>
         public PoolObject GetFreeElement(Vector3 position, Quaternion rotation)
         {
-            PoolObject element = GetFreeElement(position);
+            PoolObject element = GetFreeElement(position, true);
             element.transform.rotation = rotation;
+            element.gameObject.SetActive(true);
             return element;
         }
     }

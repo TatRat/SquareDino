@@ -34,7 +34,7 @@ namespace Player
         public void OffPossibilityToShoot()
         {
             _isReadyToShoot = false;
-            StopCoroutine(Cooldown());
+            StopAllCoroutines();
         }
         public void OnPossibilityToShoot()
         {
